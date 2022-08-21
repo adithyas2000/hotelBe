@@ -14,15 +14,15 @@ const reservationSchema = new mongoose.Schema({
   },
   customer_name: {
     type: String,
-    required: [true, "Please provide a valid reservation_id"],
+    required: [true, "Please provide a customer_name"],
   },
   customer_address: {
     type: String,
-    required: [true, "Please provide a valid reservation_id"],
+    required: [true, "Please provide a valid customer_address"],
   },
   customer_contact_number: {
     type: String,
-    required: [true, "Please provide a valid reservation_id"],
+    required: [true, "Please provide a valid customer_contact_number"],
   },
   arrival_date: {
     type: String,
