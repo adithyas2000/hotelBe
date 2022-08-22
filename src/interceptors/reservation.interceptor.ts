@@ -12,6 +12,7 @@ export class ReservationValidators {
       customer_contact_number: Joi.string().required(),
       arrival_date: Joi.string().required(),
       departure_date: Joi.string().required(),
+      hotel_id: Joi.string().required(),
       rooms: Joi.array()
         .required()
         .items(

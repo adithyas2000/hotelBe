@@ -32,6 +32,10 @@ const reservationSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please provide a valid departure_date"],
   },
+  hotel_id: {
+    type: String,
+    required: [true, "Please provide a valid hotel_id"],
+  },
   rooms: {
     type: Array,
     required: [true, "Please provide a valid reservation_id"],

@@ -8,6 +8,11 @@ const hotelRoomSchema = new mongoose.Schema({
     lowercase: true,
     trim: true,
   },
+
+  room_type_id: {
+    type: String,
+    required: [true, "Please provide a valid room_type"],
+  },
   room_type: {
     type: String,
     required: [true, "Please provide a valid room_type"],

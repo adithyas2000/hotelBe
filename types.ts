@@ -44,3 +44,15 @@ export interface TokenServicesInterface {
     next: NextFunction
   ): Promise<NextFunction | string>;
 }
+export interface AuthorizeUserServicesInterface {
+  checkUserRoleSuperAdmin(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<NextFunction | void>;
+  checkUserRoleRegAdmin(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<NextFunction | void>;
+}
