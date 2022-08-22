@@ -12,12 +12,12 @@ export class TokenServices implements TokenServicesInterface {
     //check the token exist
     if (!req.headers.authorization)
       return next(errorResponseHandler(401, ErrorMessages.REQUEST_TO_LOGIN));
-
+    
     let token = req.headers.authorization.split(" ")[1];
 
     if (!token)
       return next(errorResponseHandler(401, ErrorMessages.REQUEST_TO_LOGIN));
-
+    
     try {
       // decode the token
       const decodedUserId = jwt.verify(
