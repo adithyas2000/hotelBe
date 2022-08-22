@@ -9,6 +9,7 @@ import globalErrorHandler from "./api/error/error.controller";
 import LoggerGlobal from "../logger/loggerSingelton";
 import authRouter from "./api/auth/auth.controller";
 import reservationRouter from "./api/reservation/reservation.controller";
+import venueRouter from "./api/venues/venues.controller";
 
 const logger = LoggerGlobal.getInstance().logger;
 
@@ -25,6 +26,7 @@ app.use(express.urlencoded({ extended: true }));
 // ROUTES
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/reservation", reservationRouter);
+app.use("/api/v1/venues", venueRouter);
 
 // ERROR HANDLER MIDDLEWARE FOR ROUTES
 app.all("*", (req: Request, res: Response, next: NextFunction) => {

@@ -8,15 +8,15 @@ const venueSchema = new mongoose.Schema({
     lowercase: true,
     trim: true,
   },
-  venue_type: {
-    type: String,
-    required: [true, "Please provide a valid venue_type"],
-  },
   venue_name: {
     type: String,
     required: [true, "Please provide a valid venue_name"],
   },
   venue_address: {
+    type: String,
+    required: [true, "Please provide a valid venue_address"],
+  },
+  venue_city: {
     type: String,
     required: [true, "Please provide a valid venue_address"],
   },
