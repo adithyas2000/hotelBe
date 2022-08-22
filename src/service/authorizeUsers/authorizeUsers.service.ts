@@ -9,13 +9,13 @@ export class AuthorizeUsersService implements AuthorizeUserServicesInterface {
     res: Response,
     next: NextFunction
   ) {
-    if (req.user.userType !== UserTypes.SUPER_ADMIN) {
+    if (req.user.role !== UserTypes.SUPER_ADMIN) {
       return next(errorResponseHandler(403, ErrorMessages.UNAUTHORIZED_USER));
     }
     next();
   }
   async checkUserRoleRegAdmin(req: Request, res: Response, next: NextFunction) {
-    if (req.user.userType !== UserTypes.ADMIN) {
+    if (req.user.role !== UserTypes.ADMIN) {
       return next(errorResponseHandler(403, ErrorMessages.UNAUTHORIZED_USER));
     }
     next();

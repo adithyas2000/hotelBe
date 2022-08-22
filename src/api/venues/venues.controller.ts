@@ -12,7 +12,7 @@ const authUser = new AuthorizeUsersService();
 const venueServices = new VenueServices();
 
 venueRouter.get(
-  "/venues",
+  "/",
   async (req: Request, res: Response, next: NextFunction) => {
     venueServices.getAllVenues(req, res, next);
   }
