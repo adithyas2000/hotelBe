@@ -17,6 +17,14 @@ authRouter.post(
     authServices.login(req, res, next);
   }
 );
+authRouter.post(
+  "/customer",
+  sanitize.sanitizeUserInputs,
+  validate.customerLoginValidator,
+  async (req: Request, res: Response, next: NextFunction) => {
+    authServices.customerLogin(req, res, next);
+  }
+);
 
 authRouter.post(
   "/refresh-token",

@@ -18,7 +18,7 @@ checkinRouter.post(
   tokenService.verifyUser,
   authUser.checkUserRoleRegAdmin,
   async (req: Request, res: Response, next: NextFunction) => {
-    checkinServices.checkInCustomer(req, res, next);
+    checkinServices.checkInCustomerWithPriorReservation(req, res, next);
   }
 );
 
