@@ -4,15 +4,13 @@ import LoggerGlobal from "../../../logger/loggerSingelton";
 import errorResponseHandler from "../../../utils/errorResponseHandler";
 import { ErrorMessages, ResponseStatus,ReservationStatus } from "../../../enums/enums";
 import { Reservation } from "../../model/reservation/reservation";
-import { ReservationServices } from "../../service/reservation/reservation.service";
 const logger = LoggerGlobal.getInstance().logger;
-const reservationServices=new ReservationServices();
-export class CheckinServices {
-    async checkInCustomer(req: Request, res: Response, next: NextFunction) {
+export class CheckoutServices {
+    async checkOutCustomer(req: Request, res: Response, next: NextFunction) {
         try {
             const getcustomer = Reservation.findOne({ reservation_id: req.body.reservation_id }).lean().exec(function (err, resp) {
                 if (resp) {
-                    const updateCustomer = Reservation.findOneAndUpdate({ reservation_id: resp.reservation_id }, { arrival_date: req.body.arrival_date,status:ReservationStatus.CHECKED_IN }).lean().exec(function (err, update_res) {
+                    const updateCustomer = Reservation.findOneAndUpdate({ reservation_id: resp.reservation_id }, { departure_date: req.body.departure_date,status:ReservationStatus.CHECKED_OUT }).lean().exec(function (err, update_res) {
                         res.status(200).json({
                             status: ResponseStatus.SUCCESS,
                             data: {
@@ -22,7 +20,12 @@ export class CheckinServices {
                     });
 
                 }else{
-                    reservationServices.createANewReservation(req,res,next);
+                    res.status(400).json({
+                        status:ResponseStatus.FAILED,
+                        data:{
+                            "error":"No records found"
+                        }
+                    })
                 }
 
             });

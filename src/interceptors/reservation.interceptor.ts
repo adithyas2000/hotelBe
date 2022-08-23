@@ -30,9 +30,10 @@ export class ReservationValidators {
     });
     const errorState = schema.validate(req.body);
 
-    if (errorState.error)
+    if (errorState.error){
+      console.log("Validation error: "+errorState.error)
       return next(errorResponseHandler(400, ErrorMessages.EMPTY_INPUT_FIELDS));
-
+  }
     next();
   }
 }

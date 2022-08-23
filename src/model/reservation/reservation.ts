@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { ReservationStatus } from "../../../enums/enums";
 
 const reservationSchema = new mongoose.Schema({
   email: {
@@ -79,6 +80,11 @@ const reservationSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
     select: false,
+  },
+
+  status:{
+    type:String,
+    default:ReservationStatus.RESERVED
   },
 });
 
