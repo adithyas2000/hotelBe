@@ -12,6 +12,7 @@ import reservationRouter from "./api/reservation/reservation.controller";
 import checkinRouter from "./api/checkin/checkin.controller";
 import venueRouter from "./api/venues/venues.controller";
 import checkoutRouter from "./api/checkout/checkout.controller";
+import paymentRouter from "./api/payment/payment.controller";
 
 const logger = LoggerGlobal.getInstance().logger;
 
@@ -31,6 +32,7 @@ app.use("/api/v1/reservation", reservationRouter);
 app.use("/api/v1/checkin", checkinRouter);
 app.use("/api/v1/venues", venueRouter);
 app.use("/api/v1/checkout",checkoutRouter);
+app.use("/api/v1/payments",paymentRouter);
 
 // ERROR HANDLER MIDDLEWARE FOR ROUTES
 app.all("*", (req: Request, res: Response, next: NextFunction) => {
