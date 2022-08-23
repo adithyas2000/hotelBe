@@ -14,6 +14,7 @@ export class AuthorizeUsersService implements AuthorizeUserServicesInterface {
     }
     next();
   }
+
   async checkUserRoleRegAdmin(req: Request, res: Response, next: NextFunction) {
     if (req.user.role !== UserTypes.ADMIN) {
       return next(errorResponseHandler(403, ErrorMessages.UNAUTHORIZED_USER));

@@ -5,19 +5,69 @@ import errorResponseHandler from "../../../utils/errorResponseHandler";
 import { ErrorMessages, ResponseStatus } from "../../../enums/enums";
 import LoggerGlobal from "../../../logger/loggerSingelton";
 import { Admin } from "../../model/admin/admin";
+import { Reservation } from "../../model/reservation/reservation";
 const logger = LoggerGlobal.getInstance().logger;
 
 export class TokenServices implements TokenServicesInterface {
-  async verifyUser(req: Request, res: Response, next: NextFunction) {
-    //check the token exist
+  async verifyCustomerReservation(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
     if (!req.headers.authorization)
       return next(errorResponseHandler(401, ErrorMessages.REQUEST_TO_LOGIN));
-    
+
     let token = req.headers.authorization.split(" ")[1];
 
     if (!token)
       return next(errorResponseHandler(401, ErrorMessages.REQUEST_TO_LOGIN));
-    
+    try {
+      // decode the token
+      const decodedReservationId = jwt.verify(
+        token,
+        `${process.env.TOKEN}`,
+        function (err: Error, decoded: any) {
+          if (err) {
+            const errorMessage =
+              err.name === "TokenExpiredError"
+                ? ErrorMessages.TOKEN_EXPIRED
+                : ErrorMessages.INVALID_TOKEN;
+
+            return next(errorResponseHandler(400, errorMessage));
+          }
+          return decoded.id;
+        }
+      );
+
+      const validCustomer = await Reservation.findOne({
+        reservation_id: decodedReservationId,
+      });
+
+      if (!validCustomer)
+        return next(
+          errorResponseHandler(400, ErrorMessages.USER_DOES_NOT_EXIST)
+        );
+
+      req.user = validCustomer;
+
+      next();
+    } catch (err) {
+      logger.error(err.message);
+      return next(
+        errorResponseHandler(500, ErrorMessages.INTERNAL_SERVER_ERROR)
+      );
+    }
+  }
+  async verifyUser(req: Request, res: Response, next: NextFunction) {
+    //check the token exist
+    if (!req.headers.authorization)
+      return next(errorResponseHandler(401, ErrorMessages.REQUEST_TO_LOGIN));
+
+    let token = req.headers.authorization.split(" ")[1];
+
+    if (!token)
+      return next(errorResponseHandler(401, ErrorMessages.REQUEST_TO_LOGIN));
+
     try {
       // decode the token
       const decodedUserId = jwt.verify(

@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 import { ReservationStatus } from "../../../enums/enums";
+const { RESERVED, CHECKED_IN, CHECKED_OUT, NO_SHOW, CANCELLED } =
+  ReservationStatus;
 
 const reservationSchema = new mongoose.Schema({
   email: {
@@ -37,21 +39,19 @@ const reservationSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please provide a valid hotel_id"],
   },
-  rooms: {
-    type: Array,
+  room: {
+    type: Object,
     required: [true, "Please provide a valid reservation_id"],
-    value: [
-      {
-        room_type: {
-          type: String,
-          required: [true, "Please provide a valid room_type"],
-        },
-        no_of_occupants: {
-          type: Number,
-          required: [true, "Please provide a valid no_of_occupants"],
-        },
+    value: {
+      room_type_id: {
+        type: String,
+        required: [true, "Please provide a valid room_type"],
       },
-    ],
+      no_of_occupants: {
+        type: Number,
+        required: [true, "Please provide a valid no_of_occupants"],
+      },
+    },
   },
   credit_card_details: {
     type: Object,
@@ -76,15 +76,21 @@ const reservationSchema = new mongoose.Schema({
     },
   },
 
+  base_billing_value: {
+    type: Number,
+    required: [true, "Please enter a valid billing value"],
+  },
+
   createdAt: {
     type: Date,
     default: Date.now(),
     select: false,
   },
 
-  status:{
-    type:String,
-    default:ReservationStatus.RESERVED
+  status: {
+    type: String,
+    default: RESERVED,
+    enum: [RESERVED, CHECKED_IN, CHECKED_OUT, NO_SHOW, CANCELLED],
   },
 });
 
