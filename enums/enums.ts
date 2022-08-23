@@ -1,6 +1,7 @@
 export enum UserTypes {
   SUPER_ADMIN = "super-admin",
   ADMIN = "admin",
+  CUSTOMER = "customer",
 }
 
 export enum ResponseStatus {
@@ -31,10 +32,10 @@ export enum ErrorMessages {
   INVALID_PARAMETERS = "Invalid parameters",
   FILE_NOT_DELETED = "Error deleting file",
 }
-export enum ReservationStatus{
-  RESERVED="Reserved",
-  CHECKED_IN="Checked-in",
-  CHECKED_OUT="Checked-out",
-  NO_SHOW="No-show",
-  CANCELLED="Cancelled"
+export enum ReservationStatus {
+  RESERVED = "Reserved",
+  CHECKED_IN = "Checked-in",
+  CHECKED_OUT = "Checked-out",
+  NO_SHOW = "No-show",
+  CANCELLED = "Cancelled",
 }
