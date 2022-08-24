@@ -65,10 +65,6 @@ const reservationSchema = new mongoose.Schema({
         type: String,
         required: [true, "Please provide a valid credit_card_expiry_date"],
       },
-      credit_card_cvv: {
-        type: String,
-        required: [true, "Please provide a valid credit_card_cvv"],
-      },
       card_holder_name: {
         type: String,
         required: [true, "Please provide a valid card_holder_name"],
@@ -79,6 +75,10 @@ const reservationSchema = new mongoose.Schema({
   base_billing_value: {
     type: Number,
     required: [true, "Please enter a valid billing value"],
+  },
+
+  placed_on: {
+    type: String,
   },
 
   createdAt: {

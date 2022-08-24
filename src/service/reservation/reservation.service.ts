@@ -17,7 +17,7 @@ export class ReservationServices {
   async createANewReservation(req: Request, res: Response, next: NextFunction) {
     try {
       const reservation_id = `rev-${this.nanoid()}`;
-      req.body.reservation_id=reservation_id;
+      req.body.reservation_id = reservation_id;
       const { room, hotel_id, arrival_date, departure_date } = req.body;
       const roomTypeId = room.room_type_id;
 
@@ -25,14 +25,16 @@ export class ReservationServices {
         $and: [{ hotel_id }, { room_type_id: roomTypeId }],
       }).select("base_fee");
       const difference = daysDifference(arrival_date, departure_date);
-      const feeForTheGivenDates: number = +difference * +baseFee.base_fee;
+      const feeForTheGivenDates: number =
+        Math.abs(+difference) * +baseFee.base_fee;
 
       const newReservation = await Reservation.create({
         reservation_id,
+        placed_on: new Date().toISOString().split("T")[0],
         base_billing_value: feeForTheGivenDates,
         ...req.body,
       });
-      req.body.reservation_id=reservation_id;
+      req.body.reservation_id = reservation_id;
       res.status(200).json({
         status: ResponseStatus.SUCCESS,
         data: {
@@ -41,10 +43,10 @@ export class ReservationServices {
           base_fee: feeForTheGivenDates,
         },
       });
-      console.log("RESID:")
+      console.log("RESID:");
       // next();
     } catch (err) {
-      logger.error("Err creating res:"+err.message);
+      logger.error("Err creating res:" + err.message);
 
       return next(
         errorResponseHandler(500, ErrorMessages.INTERNAL_SERVER_ERROR)

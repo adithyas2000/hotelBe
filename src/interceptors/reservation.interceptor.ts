@@ -20,7 +20,6 @@ export class ReservationValidators {
       credit_card_details: Joi.object().optional().keys({
         credit_card_number: Joi.string().required(),
         credit_card_expiry_date: Joi.string().required(),
-        credit_card_cvv: Joi.string().required(),
         card_holder_name: Joi.string().required(),
       }),
     });
