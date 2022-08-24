@@ -34,11 +34,11 @@ export class CheckinServices {
             .lean()
             .exec(async function (err, update_res) {
 
-              const newCustomer=await Customer.create({
-                reservation_id:req.body.reservation_id,
-                room_number:req.body.room_number
+              const newCustomer = await Customer.create({
+                reservation_id: req.body.reservation_id,
+                room_number: req.body.room_number
               });
-              
+
               // res.status(200).json({
               //   status: ResponseStatus.SUCCESS,
               //   data: {
@@ -46,7 +46,7 @@ export class CheckinServices {
               //   },
               // });
             });
-            
+
         });
       // create a customer record
 
@@ -60,13 +60,13 @@ export class CheckinServices {
     }
   }
 
-  async checkInCustomerWithPriorReservation(req:Request,res:Response,next:NextFunction){
-    this.checkInCustomerWithoutPriorReservation(req,res,next),
-    res.status(200).json({
-                status: ResponseStatus.SUCCESS,
-                data: {
-                  ...req.body,
-                },
-              });
+  async checkInCustomerWithPriorReservation(req: Request, res: Response, next: NextFunction) {
+    this.checkInCustomerWithoutPriorReservation(req, res, next),
+      res.status(200).json({
+        status: ResponseStatus.SUCCESS,
+        data: {
+          ...req.body,
+        },
+      });
   }
 }
