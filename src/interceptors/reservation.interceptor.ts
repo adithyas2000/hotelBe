@@ -22,7 +22,7 @@ export class ReservationValidators {
         credit_card_expiry_date: Joi.string().required(),
         card_holder_name: Joi.string().required(),
       }),
-    });
+    }).options({allowUnknown:true});
     const errorState = schema.validate(req.body);
 
     if (errorState.error) {
