@@ -39,3 +39,7 @@ export enum ReservationStatus {
   NO_SHOW = "No-show",
   CANCELLED = "Cancelled",
 }
+export enum Cron {
+  EveryDay = "00 19 * * *",
+  InitDay = "2022-08-23T13:49:54.748Z",
+}
