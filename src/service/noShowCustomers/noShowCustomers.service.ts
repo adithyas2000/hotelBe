@@ -2,11 +2,32 @@ import LoggerGlobal from "../../../logger/loggerSingelton";
 import { ReservationStatus } from "../../../enums/enums";
 import { Reservation } from "../../model/reservation/reservation";
 import { Payment } from "../../model/payment/payments";
-
 import { Revenue } from "../../model/revenue/revenue";
 const logger = LoggerGlobal.getInstance().logger;
 
 export class NoShowCustomersServices {
+  // async cancelReservationWithoutCardDetails() {
+  //   try {
+  //     const date = new Date().toISOString().split("T")[0];
+  //     await Reservation.updateMany(
+  //       {
+  //         placed_on: date,
+  //         status: ReservationStatus.RESERVED,
+  //         credit_card_details: null,
+  //       },
+  //       {
+  //         $set: {
+  //           status: ReservationStatus.CANCELLED,
+  //         },
+  //       }
+  //     );
+
+  //     logger.info("successfully cancelled reservations");
+  //   } catch (err) {
+  //     logger.error(err.message);
+  //   }
+  // }
+
   async noshowBillingCreation() {
     try {
       const date = new Date().toISOString().split("T")[0];
