@@ -17,6 +17,19 @@ export class UserInputValidators {
     next();
   }
 
+  newAdminValidator(req: Request, res: Response, next: NextFunction) {
+    const schema = Joi.object({
+      email: Joi.string().email().required(),
+      password: Joi.string().required(),
+    });
+    const errorState = schema.validate(req.body);
+
+    if (errorState.error)
+      return next(errorResponseHandler(400, ErrorMessages.EMPTY_INPUT_FIELDS));
+
+    next();
+  }
+
   customerLoginValidator(req: Request, res: Response, next: NextFunction) {
     const schema = Joi.object({
       email: Joi.string().email().required(),
