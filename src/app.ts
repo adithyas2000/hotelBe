@@ -4,6 +4,7 @@ import express, { Application, NextFunction, Request, Response } from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import morgan from "morgan";
+import schedule from "node-schedule";
 import errorResponseHandler from "../utils/errorResponseHandler";
 import globalErrorHandler from "./api/error/error.controller";
 import LoggerGlobal from "../logger/loggerSingelton";
@@ -15,7 +16,9 @@ import checkoutRouter from "./api/checkout/checkout.controller";
 import paymentRouter from "./api/payment/payment.controller";
 import adminRouter from "./api/admin/admin.controller";
 import addonRouter from "./api/addons/addons.controller";
-
+import { NoShowCustomersServices } from "./service/noShowCustomers/noShowCustomers.service";
+import { Cron } from "../enums/enums";
+const noShow = new NoShowCustomersServices();
 const logger = LoggerGlobal.getInstance().logger;
 
 const app: Application = express();
@@ -24,9 +27,18 @@ const app: Application = express();
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// CRON JOBS
+schedule.scheduleJob({ start: Cron.InitDay, rule: Cron.EveryDay }, () => {
+  noShow.noshowBillingCreation();
+});
+schedule.scheduleJob({ start: Cron.InitDay, rule: Cron.EveryDay }, () => {
+  noShow.revenueRecordCreationForThePreviousDate();
+});
 
 // ROUTES
 app.use("/api/v1/auth", authRouter);
