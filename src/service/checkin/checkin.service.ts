@@ -10,6 +10,8 @@ import {
 import { Reservation } from "../../model/reservation/reservation";
 import { ReservationServices } from "../../service/reservation/reservation.service";
 import { Customer } from "../../model/customers/customer";
+import { PaymentServices } from "../../service/payment/payment.service";
+const paymentServices=new PaymentServices();
 const logger = LoggerGlobal.getInstance().logger;
 const reservationServices = new ReservationServices();
 export class CheckinServices {
@@ -38,13 +40,9 @@ export class CheckinServices {
                 reservation_id: req.body.reservation_id,
                 room_number: req.body.room_number
               });
-
-              // res.status(200).json({
-              //   status: ResponseStatus.SUCCESS,
-              //   data: {
-              //     ...update_res,
-              //   },
-              // });
+              console.log("resp.base:"+resp.base_billing_value);
+              req.body.fee_for_the_period=resp.base_billing_value;
+              paymentServices.createPayment(req,res,next);
             });
 
         });
