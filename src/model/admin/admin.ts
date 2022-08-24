@@ -21,6 +21,10 @@ const adminSchema = new mongoose.Schema({
     type: String,
     default: UserTypes.ADMIN,
   },
+  admin_id: {
+    type: String,
+    required: false,
+  },
   createdAt: {
     type: Date,
     default: Date.now(),
