@@ -14,6 +14,7 @@ import venueRouter from "./api/venues/venues.controller";
 import checkoutRouter from "./api/checkout/checkout.controller";
 import paymentRouter from "./api/payment/payment.controller";
 import adminRouter from "./api/admin/admin.controller";
+import addonRouter from "./api/addons/addons.controller";
 
 const logger = LoggerGlobal.getInstance().logger;
 
@@ -35,6 +36,7 @@ app.use("/api/v1/venues", venueRouter);
 app.use("/api/v1/checkout", checkoutRouter);
 app.use("/api/v1/payments", paymentRouter);
 app.use("/api/v1/admin", adminRouter);
+app.use("/api/v1/addon", addonRouter);
 
 // ERROR HANDLER MIDDLEWARE FOR ROUTES
 app.all("*", (req: Request, res: Response, next: NextFunction) => {
