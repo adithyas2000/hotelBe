@@ -50,4 +50,15 @@ reservationRouter.post(
   }
 );
 
+reservationRouter.post(
+  "/clerk/suit",
+  sanitize.sanitizeUserInputs,
+  validate.webReservationValidator,
+  verify.verifyUser,
+  auth.checkUserRoleRegAdmin,
+  async (req: Request, res: Response, next: NextFunction) => {
+    reservationServices.createANewReservation(req, res, next);
+  }
+);
+
 export default reservationRouter;
