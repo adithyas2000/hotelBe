@@ -7,7 +7,11 @@ export class PaymentValidators{
     validatePayment(req: Request, res: Response, next: NextFunction) {
       const schema = Joi.object({
         reservation_id: Joi.string().required(),
-        total_charged:Joi.number().required()
+        optional_charges:Joi.array().optional(),
+        fee_for_the_period:Joi.number().optional(),
+        no_of_additional_nights:Joi.number().optional(),
+        fee_for_additional_nights:Joi.number().optional(),
+        total_charged:Joi.number().optional()
       });
       const errorState = schema.validate(req.body);
   

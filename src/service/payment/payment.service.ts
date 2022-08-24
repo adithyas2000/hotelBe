@@ -13,39 +13,78 @@ export class PaymentServices {
         try {
             const checkReservation = Reservation.findOne({ reservation_id: req.body.reservation_id }).lean().exec(async function (err, check_res) {
                 if (check_res) {
-                    const session = await str.checkout.sessions.create({
-                        //--------------
-                        line_items: [
-                            {
-                                price_data: {
-                                    currency: 'usd',
-                                    product_data: {
-                                        name: 'T-shirt',
-                                    },
-                                    unit_amount: 2000,
+                    var newPayDetails=new Payment;
+                    newPayDetails={...req.body,fee_for_the_period:check_res.base_billing_value}
+                    const stripeItemArray=[
+                        {
+                            price_data:{
+                                currency:'lkr',
+                                product_data:{
+                                    name:'Base charge'
                                 },
-                                quantity: 1,
+                                unit_amount:newPayDetails.fee_for_the_period*100
                             },
+                            quantity:1
+                        },
+                        {
+                            price_data:{
+                                currency:'lkr',
+                                product_data:{
+                                    name:'Charge for additional nights'
+                                },
+                                unit_amount:(newPayDetails.fee_for_additional_nights/newPayDetails.no_of_additional_nights*100)
+                            },
+                            quantity:newPayDetails.no_of_additional_nights
+                        },
+                        // {
+                        //     price_data:{
+                        //         currency:'usd',
+                        //         product_data:{
+                        //             name:'Optional charges'
+                        //         },
+                        //         unit_amount:newPayDetails.optional_charges
+                        //     },
+                        //     quantity:1
+                        // },
+                    ];
+                    const session = await str.checkout.sessions.create({
+                        line_items: [
+                            ...stripeItemArray
+                            // {
+                            //     price_data: {
+                            //         currency: 'usd',
+                            //         product_data: {
+                            //             name: 'T-shirt',
+                            //         },
+                            //         unit_amount: 2000,
+                            //     },
+                            //     quantity: 1,
+                            // },
                         ],
                         mode: 'payment',
                         success_url: 'http://www.success',
                         cancel_url: 'http://www.cancel',
-                        //------------
                     });
                     //record payment to db
                     const newPayment = await Payment.create(
                         {
-                            ...req.body
+                            ...req.body,
+                            fee_for_the_period:check_res.base_billing_value,
+                            total_charged:(check_res.base_billing_value+req.body.fee_for_additional_nights)
                         }
 
                     );
+                    //Uncomment this and comment redirect to get url in response
+
                     res.status(200).json({
                         status: ResponseStatus.SUCCESS,
                         data: {
                             ...req.body,
                             "paymentURL": session.url
                         }
-                    })
+                    });
+
+                    // res.redirect(session.url);
                 }
             });
 

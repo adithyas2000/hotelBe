@@ -17,6 +17,7 @@ export class ReservationServices {
   async createANewReservation(req: Request, res: Response, next: NextFunction) {
     try {
       const reservation_id = `rev-${this.nanoid()}`;
+      req.body.reservation_id=reservation_id;
       const { room, hotel_id, arrival_date, departure_date } = req.body;
       const roomTypeId = room.room_type_id;
 
@@ -31,7 +32,7 @@ export class ReservationServices {
         base_billing_value: feeForTheGivenDates,
         ...req.body,
       });
-
+      req.body.reservation_id=reservation_id;
       res.status(200).json({
         status: ResponseStatus.SUCCESS,
         data: {
@@ -40,8 +41,10 @@ export class ReservationServices {
           base_fee: feeForTheGivenDates,
         },
       });
+      console.log("RESID:")
+      // next();
     } catch (err) {
-      logger.error(err.message);
+      logger.error("Err creating res:"+err.message);
 
       return next(
         errorResponseHandler(500, ErrorMessages.INTERNAL_SERVER_ERROR)

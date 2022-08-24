@@ -10,8 +10,9 @@ export class CheckinValidators {
     const schema = Joi.object({
       reservation_id: Joi.string().required(),
       arrival_date: Joi.string().required(),
-      status: Joi.string().valid(ReservationStatus.CHECKED_IN)
-    });
+      room_number:Joi.string().required()
+      // status: Joi.string().valid(ReservationStatus.CHECKED_IN)
+    }).options({allowUnknown:true});
     const errorState = schema.validate(req.body);
 
     if (errorState.error) {

@@ -9,10 +9,11 @@ import {
 } from "../../../enums/enums";
 import { Reservation } from "../../model/reservation/reservation";
 import { ReservationServices } from "../../service/reservation/reservation.service";
+import { Customer } from "../../model/customers/customer";
 const logger = LoggerGlobal.getInstance().logger;
 const reservationServices = new ReservationServices();
 export class CheckinServices {
-  async checkInCustomerWithPriorReservation(
+  async checkInCustomerWithoutPriorReservation(
     req: Request,
     res: Response,
     next: NextFunction
@@ -22,23 +23,30 @@ export class CheckinServices {
         reservation_id: req.body.reservation_id,
       })
         .lean()
-        .exec(function (err, resp) {
+        .exec(async function (err, resp) {
           const updateCustomer = Reservation.findOneAndUpdate(
-            { reservation_id: resp.reservation_id },
+            { reservation_id: req.body.reservation_id },
             {
               arrival_date: req.body.arrival_date,
               status: ReservationStatus.CHECKED_IN,
             }
           )
             .lean()
-            .exec(function (err, update_res) {
-              res.status(200).json({
-                status: ResponseStatus.SUCCESS,
-                data: {
-                  ...update_res,
-                },
+            .exec(async function (err, update_res) {
+
+              const newCustomer = await Customer.create({
+                reservation_id: req.body.reservation_id,
+                room_number: req.body.room_number
               });
+
+              // res.status(200).json({
+              //   status: ResponseStatus.SUCCESS,
+              //   data: {
+              //     ...update_res,
+              //   },
+              // });
             });
+
         });
       // create a customer record
 
@@ -50,5 +58,15 @@ export class CheckinServices {
         errorResponseHandler(500, ErrorMessages.INTERNAL_SERVER_ERROR)
       );
     }
+  }
+
+  async checkInCustomerWithPriorReservation(req: Request, res: Response, next: NextFunction) {
+    this.checkInCustomerWithoutPriorReservation(req, res, next),
+      res.status(200).json({
+        status: ResponseStatus.SUCCESS,
+        data: {
+          ...req.body,
+        },
+      });
   }
 }

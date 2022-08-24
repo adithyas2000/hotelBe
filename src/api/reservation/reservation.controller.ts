@@ -35,7 +35,7 @@ reservationRouter.get(
   validate.webReservationValidator,
   verify.verifyCustomerReservation,
   async (req: Request, res: Response, next: NextFunction) => {
-    reservationServices.createANewReservation(req, res, next);
+    reservationServices.customerCancelReservation(req, res, next);
   }
 );
 
