@@ -57,7 +57,9 @@ reservationRouter.post(
   verify.verifyUser,
   auth.checkUserRoleRegAdmin,
   async (req: Request, res: Response, next: NextFunction) => {
-    reservationServices.createANewReservation(req, res, next);
+    console.log(req.body.room.room_type_id)
+    // req.body.room.room_type_id
+    // reservationServices.createANewReservation(req, res, next);
   }
 );
 
