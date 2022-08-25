@@ -13,7 +13,7 @@ export class VenueServices {
   async createANewVenue(req: Request, res: Response, next: NextFunction) {
     try {
       const venue_id = `venue-${this.nanoid()}`;
-      const room_type_id = `room-type-${this.nanoid()}`;
+      var room_type_id="";
       const {
         venue_name,
         venue_address,
@@ -21,6 +21,12 @@ export class VenueServices {
         venue_contact_number,
         rooms,
       } = req.body;
+      if(rooms[0].room_type=="suit"){
+         room_type_id = `suit-type-${this.nanoid()}`;
+      }else{
+         room_type_id = `room-type-${this.nanoid()}`;
+      }
+      
 
       await Venue.create({
         venue_id,
