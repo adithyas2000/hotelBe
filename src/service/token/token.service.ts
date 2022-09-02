@@ -6,6 +6,7 @@ import { ErrorMessages, ResponseStatus } from "../../../enums/enums";
 import LoggerGlobal from "../../../logger/loggerSingelton";
 import { Admin } from "../../model/admin/admin";
 import { Reservation } from "../../model/reservation/reservation";
+
 const logger = LoggerGlobal.getInstance().logger;
 
 export class TokenServices implements TokenServicesInterface {
@@ -148,7 +149,7 @@ export class TokenServices implements TokenServicesInterface {
   async refreshToken(req: Request, res: Response, next: NextFunction) {
     try {
       const { refreshToken } = req.body;
-      const decodedUser = await jwt.verify(
+      const decodedUser: any = await jwt.verify(
         refreshToken,
         `${process.env.REFRESH_TOKEN}`,
         function (err: Error, decoded: any) {

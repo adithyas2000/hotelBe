@@ -33,5 +33,13 @@ authRouter.post(
     tokenService.refreshToken(req, res, next);
   }
 );
+authRouter.post(
+  "/travel-company",
+  sanitize.sanitizeUserInputs,
+  validate.travelRegistrationValidator,
+  async (req: Request, res: Response, next: NextFunction) => {
+    authServices.travelCompanyRegistration(req, res, next);
+  }
+);
 
 export default authRouter;

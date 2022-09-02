@@ -23,6 +23,11 @@ export type RegisteredUserType = {
   password: string;
   role: string;
 };
+export type RegisteredTravelUserType = {
+  _id?: object;
+  email: string;
+  name: string;
+};
 
 export interface TokenServicesInterface {
   verifyUser(
@@ -36,13 +41,13 @@ export interface TokenServicesInterface {
     next: NextFunction
   ): Promise<NextFunction | void>;
   signRefreshToken(
-    user: RegisteredUserType,
+    user: RegisteredUserType | any,
     next: NextFunction
-  ): Promise<NextFunction | string>;
+  ): Promise<NextFunction | any>;
   signToken(
-    user: RegisteredUserType,
+    user: RegisteredUserType | any,
     next: NextFunction
-  ): Promise<NextFunction | string>;
+  ): Promise<NextFunction | any>;
 }
 export interface AuthorizeUserServicesInterface {
   checkUserRoleSuperAdmin(
@@ -55,4 +60,8 @@ export interface AuthorizeUserServicesInterface {
     res: Response,
     next: NextFunction
   ): Promise<NextFunction | void>;
+}
+
+export interface OAuthTokenServicesInterface {
+  verifyAuthOToken(): Promise<any | NextFunction>;
 }
