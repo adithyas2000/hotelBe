@@ -18,6 +18,7 @@ import adminRouter from "./api/admin/admin.controller";
 import addonRouter from "./api/addons/addons.controller";
 import { NoShowCustomersServices } from "./service/noShowCustomers/noShowCustomers.service";
 import { Cron } from "../enums/enums";
+import reportRouter from "./api/report/report.controller";
 const noShow = new NoShowCustomersServices();
 const logger = LoggerGlobal.getInstance().logger;
 
@@ -49,6 +50,7 @@ app.use("/api/v1/checkout", checkoutRouter);
 app.use("/api/v1/payments", paymentRouter);
 app.use("/api/v1/admin", adminRouter);
 app.use("/api/v1/addon", addonRouter);
+app.use("/api/v1/reports",reportRouter);
 
 // ERROR HANDLER MIDDLEWARE FOR ROUTES
 app.all("*", (req: Request, res: Response, next: NextFunction) => {
