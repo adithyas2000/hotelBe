@@ -173,6 +173,14 @@ export class VenueServices {
     try {
       const room_type_id = req.params.id;
       const room = await HotelRoom.findOne({ room_type_id });
+      if(!room){
+        res.status(400).json({
+          status: ResponseStatus.FAILED,
+          data: {
+            "Error":"No records found"
+          },
+        });
+      }
       res.status(200).json({
         status: ResponseStatus.SUCCESS,
         data: {
