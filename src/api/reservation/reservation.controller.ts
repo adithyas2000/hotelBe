@@ -3,14 +3,27 @@ import { SanitizeInputs } from "../../interceptors/sanitize.interceptor";
 import { ReservationValidators } from "../../interceptors/reservation.interceptor";
 import { TokenServices } from "../../service/token/token.service";
 import { ReservationServices } from "../../service/reservation/reservation.service";
+import { OAuthTokenServices } from "../../service/cognito/cognitor.service";
 import { AuthorizeUsersService } from "../../service/authorizeUsers/authorizeUsers.service";
+import jwtAuthz from "express-jwt-authz";
 const reservationRouter = Router();
 const reservationServices = new ReservationServices();
 const sanitize = new SanitizeInputs();
 const validate = new ReservationValidators();
 const verify = new TokenServices();
 const auth = new AuthorizeUsersService();
+const cognito = new OAuthTokenServices();
 
+reservationRouter.post(
+  "/travel-companies",
+  cognito.verifyAuthOToken(),
+  jwtAuthz([process.env.AUTHO_SCOPE_CREATE]),
+  sanitize.sanitizeUserInputs,
+  validate.travelCompaniesReservationValidator,
+  async (req: Request, res: Response, next: NextFunction) => {
+    reservationServices.createANewReservation(req, res, next);
+  }
+);
 reservationRouter.post(
   "/customer",
   sanitize.sanitizeUserInputs,
@@ -47,6 +60,19 @@ reservationRouter.post(
   auth.checkUserRoleRegAdmin,
   async (req: Request, res: Response, next: NextFunction) => {
     reservationServices.createANewReservation(req, res, next);
+  }
+);
+
+reservationRouter.post(
+  "/clerk/suit",
+  sanitize.sanitizeUserInputs,
+  validate.webReservationValidator,
+  verify.verifyUser,
+  auth.checkUserRoleRegAdmin,
+  async (req: Request, res: Response, next: NextFunction) => {
+    console.log(req.body.room.room_type_id);
+    // req.body.room.room_type_id
+    // reservationServices.createANewReservation(req, res, next);
   }
 );
 

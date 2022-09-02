@@ -11,6 +11,10 @@ const reservationSchema = new mongoose.Schema({
     lowercase: true,
     trim: true,
   },
+  travel_companyName: {
+    type: String,
+    required: false,
+  },
   reservation_id: {
     type: String,
     required: [true, "Please provide a valid reservation_id"],
