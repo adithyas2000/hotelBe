@@ -92,7 +92,7 @@ export class NoShowCustomersServices {
         total_occupancy: numberOfOccupants,
         revenue,
       });
-
+      
       logger.info("revenue created");
     } catch (err) {
       logger.error(err.message);
