@@ -139,7 +139,6 @@ export class ReservationServices {
       });
     } catch (err) {
       logger.error(err.message);
-
       return next(
         errorResponseHandler(500, ErrorMessages.INTERNAL_SERVER_ERROR)
       );
