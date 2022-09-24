@@ -56,6 +56,12 @@ export class PaymentServices {
   async makePayment(req: Request, res: Response, next: NextFunction) {
     try {
       const getPayment = Payment.findOne({ reservation_id: req.body.reservation_id }).lean().exec(async function (err, pay_resp) {
+        if(!pay_resp){
+          return next(
+            errorResponseHandler(500, ErrorMessages.EMPTY_INPUT_FIELDS)
+          );
+        }
+
         console.log(pay_resp);
         // var newPayDetails = new Payment;
         const newPayDetails = { ...pay_resp }
