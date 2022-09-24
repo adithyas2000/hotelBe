@@ -44,8 +44,6 @@ reservationRouter.patch(
 
 reservationRouter.get(
   "/cancel",
-  sanitize.sanitizeUserInputs,
-  validate.webReservationValidator,
   verify.verifyCustomerReservation,
   async (req: Request, res: Response, next: NextFunction) => {
     reservationServices.customerCancelReservation(req, res, next);
@@ -70,9 +68,15 @@ reservationRouter.post(
   verify.verifyUser,
   auth.checkUserRoleRegAdmin,
   async (req: Request, res: Response, next: NextFunction) => {
-    console.log(req.body.room.room_type_id);
-    // req.body.room.room_type_id
-    // reservationServices.createANewReservation(req, res, next);
+    reservationServices.createANewReservation(req, res, next);
+  }
+);
+reservationRouter.get(
+  "/view-all",
+  verify.verifyUser,
+  auth.checkUserRoleRegAdmin,
+  async (req: Request, res: Response, next: NextFunction) => {
+    reservationServices.viewAllReservations(req, res, next);
   }
 );
 

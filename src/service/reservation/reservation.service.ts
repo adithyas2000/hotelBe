@@ -126,4 +126,22 @@ export class ReservationServices {
       );
     }
   }
+
+  async viewAllReservations(req: Request, res: Response, next: NextFunction) {
+    try {
+      const allReservations = await Reservation.find();
+
+      res.status(200).json({
+        status: ResponseStatus.SUCCESS,
+        data: {
+          list: allReservations,
+        },
+      });
+    } catch (err) {
+      logger.error(err.message);
+      return next(
+        errorResponseHandler(500, ErrorMessages.INTERNAL_SERVER_ERROR)
+      );
+    }
+  }
 }
